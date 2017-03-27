@@ -1,0 +1,385 @@
+<template name="searchView">
+    <div class="t-Search u-fill">
+        <div class="row u-fill">
+            <div class="t-Search-Panel col-sm-3 u-fill">
+                <div class="t-Search-Panel-Body">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">How you want to search</div>
+                        <div class="panel-body">
+                            <div role="tabpanel">
+                                <ul id="t-Search-Main-Panel" class="nav nav-tabs nav-pills" role="tablist">
+                                    <li role="presentation" id="t-Search-Tab-Step1" class="active" ><a href="#t-Search-Add-Page" aria-controls="t-Search-Add-Page" role="tab" data-toggle="tab" data-placement="top"  title="Input The URL of your target website here" >Add Page</a></li>
+                                    <li role="presentation" id="t-Search-Tab-Step2" class=""><a href="#t-Search-Input-Element-Collect" aria-controls="t-Search-Input-Element-Collect" role="tab" data-toggle="tab"  data-placement="top" title="Tell us how you want to search">Action List</a></li>
+                                    <li role="presentation" id="t-Search-Tab-Step3" class=""><a href="#t-Search-Form-Submit"  aria-controls="t-Search-Form-Submit" role="tab" data-toggle="tab" data-placement="top" title="The final step as you usually do for search">Finish</a></li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="t-Search-Add-Page">
+                                    <br>
+                                        <div class="input-group">
+
+                                            <input class="form-control" type="text" v-model="urlInput" autofocus>
+                                            <span class="t-Search-Form-Search-Btn input-group-addon" v-on="click: addUrlContent">Add Page</span>
+                                        </div>
+                                        <hr>
+
+                                        <strong>Try some example websites</strong>
+                                        <div class="row no-gutter">
+                                            <div class="col-sm-6">
+                                                <button class="btn btn-default btn-block" data-url="http://www.ebay.com/sch/ebayadvsearch/" v-on="click: onClickExampleBtn">Ebay Advance</button>
+                                                <button class="btn btn-default btn-block" data-url="http://www.target.com/" v-on="click: onClickExampleBtn">Target </button>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <button class="btn btn-default btn-block" data-url="http://www.kayak.com/" v-on="click: onClickExampleBtn">Kayak </button>
+                                                <button class="btn btn-default btn-block" data-url="http://www.amazon.com/" v-on="click: onClickExampleBtn">Amazon </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div role="tabpanel" class="tab-pane fade" id="t-Search-Input-Element-Collect">
+                                        <div v-repeat="currentTab.clickDataArray">
+                                            <div v-if='whetherText(type, timbr_clicked)'>
+                                                <ul class="list-group">
+                                                    <li class="list-group-item">
+                                                        <div class="input-group">
+                                                            <input class="form-control" placeholder="Value here" v-model="value" disabled>
+                                                            <span class="input-group-btn">
+                                                                <button class="btn btn-danger" type="button" v-on="click: onClickDelete" data-count="[[$index]]">
+                                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                                </button>
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            <span>
+                                                                <button class="btn btn-info btn-block" id="Customize-[[$index]]" v-on="click: onClickCustomize" data-count="[[$index]]">Customize!</button>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                                <hr>
+                                            </div>
+
+                                            <div v-if='whetherCheckbox(type, checked)'>
+                                                <ul class="list-group">
+                                                    <li class="list-group-item">
+                                                        <div>
+                                                            <span>
+                                                                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                                                                  <a href="#" class="btn btn-info" role="button" disabled>You have checked this Checkbox:</a>
+                                                                </div>
+                                                            </span>
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <input class="form-control btn btn-primary" v-model="label" disabled>
+                                                            <span class="input-group-btn">
+                                                                <button class="btn btn-danger" type="button" v-on="click: onClickDelete" data-count="[[$index]]">
+                                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                                </button>
+                                                            </span>
+                                                        </div>
+
+                                                    </li>
+                                                </ul>
+                                                <hr>
+                                            </div>
+
+                                            <div v-if='whetherRadio(type, timbr_clicked)'>
+                                                <ul class="list-group">
+                                                    <li class="list-group-item">
+                                                        <div>
+                                                            <span>
+                                                                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                                                                  <a href="#" class="btn btn-info" role="button" disabled>You have select this option:</a>
+                                                                </div>
+                                                            </span>
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <input class="form-control btn btn-primary" v-model="valueandlabel[picked]" disabled>
+                                                            <span class="input-group-btn">
+                                                                <button class="btn btn-danger" type="button" v-on="click: onClickDelete" data-count="[[$index]]">
+                                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                                </button>
+                                                            </span>
+                                                        </div>
+<!--                                                         <input class="form-control" placeholder="Selector output" v-model="dompath">
+ -->                                                        <div>
+                                                            <span>
+                                                                <button class="btn btn-info btn-block" id="Customize-[[$index]]" v-on="click: onClickCustomize" data-count="[[$index]]">Customize!</button>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                                <hr>
+                                            </div>
+
+                                            <div v-if='whetherSelect(type, timbr_clicked)'>
+                                                <ul class="list-group">
+                                                    <li class="list-group-item">
+                                                        <div>
+                                                            <span>
+                                                                <div class="btn-group btn-group-justified" role="group" aria-label="Justified button group">
+                                                                  <a href="#" class="btn btn-info" role="button" disabled>You have select this option:</a>
+                                                                </div>
+                                                            </span>
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <input class="form-control btn btn-primary" v-model="valueandlabel[selected]" disabled>
+                                                            <span class="input-group-btn">
+                                                                <button class="btn btn-danger" type="button" v-on="click: onClickDelete" data-count="[[$index]]">
+                                                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                                                </button>
+                                                            </span>
+                                                        </div>
+                                                        <div>
+                                                            <span>
+                                                                <button class="btn btn-info btn-block" id="Customize-[[$index]]" v-on="click: onClickCustomize" data-count="[[$index]]">Customize!</button>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                                <hr>
+                                            </div>
+
+                                            <div v-if='whetherSubmit(type, timbr_clicked)'>
+                                                <hr>
+                                                <div>
+                                                    You click a submit button or link here!
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div role="tabpanel" class="tab-pane fade" id="t-Search-Form-Submit">
+                                        <strong>Click "Go to Next Step" when you ready</strong>
+                                        <hr>
+                                        <button id="submitTest" class="btn btn-success" v-on="click: goResultView">Go to Next Step</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="t-Search-Iframe-Wrapper col-sm-9 u-fill">
+                <div role="tabpanel" class="t-Search-IframeResult-Panel u-fill">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li v-repeat="urlArray" role="presentation" ><a href="#t-Search-Iframe-Tab[[$index]]" aria-controls="t-Search-Iframe-Tab[[$index]]" role="tab" data-toggle="tab" v-on="click: changeTabStatus($index)">Web Page [[$index]]</a><span v-on="click: deleteTab($index)">x</span></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div v-repeat="urlArray" role="tabpanel" class="tab-pane u-fill" id="t-Search-Iframe-Tab[[$index]]">
+                            <iframe class="t-Search-Iframe center-block" srcdoc="[[urlContent]]" frameborder="0"></iframe>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <!-- modal for text -->
+        <div class="modal fade" id="t-ModaL-Text">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Customize This Text</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation"><a href="#t-Modal-Text-Tabpanel-MulInput" aria-controls="t-Modal-Text-Tabpanel-MulInput" role="tab" data-toggle="tab">Input Multiple Values</a></li>
+                            <li role="presentation"><a href="#t-Modal-Text-Tabpanel-MulUpload" aria-controls="t-Modal-Text-Tabpanel-MulUpload" role="tab" data-toggle="tab">Upload a file</a></li>
+                        </ul>
+
+                  <!-- Tab panes -->
+                        <div class="tab-content">
+
+                            <div role="tabpanel" class="tab-pane active" id="t-Modal-Text-Tabpanel-MulInput">
+                                <div class="row">
+                                    <div class="col-md-12"><br></div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <div class="col-md-10">
+                                            <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="value1, value2, value3..." v-model="Modals.T_Mul.value">
+                                                <div class="input-group-btn">
+                                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Fast Models below<span class="caret"></span></button>
+                                                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                                                        <li><a v-on="click: T_MulInputInsert('AtoZ')">"A" -> "Z"</a></li>
+                                                        <li><a v-on="click: T_MulInputInsert('1to9')">1 -> 9 (Pure Number)</a></li>
+                                                    </ul>
+                                                </div><!-- /btn-group -->
+                                            </div><!-- /input-group -->
+                                        </div>
+
+                                        <div class="col-md-1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <hr>
+                                        <div class="col-md-7"></div>
+                                        <div class="col-md-5">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" v-on="click: T_MulInputSubmit([[indexcount]])">Save changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div role="tabpanel" class="tab-pane" id="t-Modal-Text-Tabpanel-MulUpload">
+                                <div class="row">
+                                    <div class="col-md-12"><br></div>
+                                    <div class="col-md-12">
+                                        <div class="col-md-1">
+                                        </div>
+                                        <div class="col-md-10">
+                                            <span class="btn btn-default btn-file btn-block">Upload <input type="file" id="t-Modal-Text-Tabpanel-MulUpload-File"></span>
+                                            <textarea id="t-Modal-Text-Tabpanel-MulUpload-Preview" class="btn-block" placeholder="here shows the values in your file" v-model="Modals.T_Mul.value"></textarea>
+                                        </div>
+
+                                        <div class="col-md-1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <hr>
+                                        <div class="col-md-7"></div>
+                                        <div class="col-md-5">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary" v-on="click: T_MulUploadSubmit([[indexcount]])" data-dismiss="modal">Save changes</button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- / modal for text  -->
+
+
+        <!-- modal for radio -->
+        <div class="modal fade" id="t-ModaL-Radio">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Customize This Radio</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#t-Modal-Radio-Mul" aria-controls="t-Modal-Radio-Mul" role="tab" data-toggle="tab">Advance Multiple Options</a></li>
+                        </ul>
+                  <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="t-Modal-Radio-Mul">
+                                 <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-2">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <br>
+                                            <div class="input-group">
+                                                <div v-repeat='S_Mul_Array'>
+                                                    <input type="checkbox" value="[[value]]">----[[label]]
+                                                </div>
+
+                                            </div>
+                                            <br>
+                                        </div>
+                                        <div class="col-md-2">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="alert alert-info" role="alert">
+                                            You can check multiple options here, and we will provide you mutiple results with every option checked one by one in the end
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- / modal for text  -->        <!-- modal for text -->
+
+        <div class="modal fade" id="t-ModaL-Select">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Customize This Select Options</h4>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active"><a href="#t-Modal-Select-Mul" aria-controls="t-Modal-Select-Mul" role="tab" data-toggle="tab">Advance Multiple Options</a></li>
+                        </ul>
+
+                  <!-- Tab panes -->
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane active" id="t-Modal-Select-Mul">
+                                 <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-md-2">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <br>
+                                            <div class="input-group">
+                                                <div v-repeat='S_Mul_Array'>
+                                                    <input type="checkbox" value="[[value]]">----[[label]]
+                                                </div>
+
+                                            </div>
+                                            <br>
+                                        </div>
+                                        <div class="col-md-2">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="alert alert-info" role="alert">
+                                            You can check multiple options here, and we will provide you mutiple results with every option checked one by one in the end
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- / modal for text  -->
+
+
+    </div>
+
+
+</template>

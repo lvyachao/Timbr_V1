@@ -1,0 +1,14 @@
+.__highlight {
+    background-color: #1abc9c !important;
+    -moz-box-shadow:    inset 0 0 5px #000000;
+    -webkit-box-shadow: inset 0 0 5px #000000;
+    box-shadow:         inset 0 0 5px #000000;
+}
+
+.__perm-highlight {
+    background-color: #f1c40f !important;
+}
+
+.__attr-highlight {
+    background-color: #9b59b6 !important;
+}

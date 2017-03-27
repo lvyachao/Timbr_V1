@@ -1,0 +1,47 @@
+.timbr_highlight {
+    border-radius: 4px 4px 4px 4px;
+	-moz-border-radius: 4px 4px 4px 4px;
+	-webkit-border-radius: 4px 4px 4px 4px;
+}
+
+
+.timbr_border1 {
+	border: 3px dashed #ff0000;
+}
+.timbr_border2 {
+	border: 3px dashed #ff0099;
+}
+.timbr_border3 {
+	border: 3px dashed #a900b8;
+}
+.timbr_border4 {
+	border: 3px dashed #3c00ff;
+}
+.timbr_border5 {
+	border: 3px dashed #040080;
+}
+.timbr_border6 {
+	border: 3px dashed #3595fc;
+}
+.timbr_border7 {
+	border: 3px dashed #00fff2;
+}
+.timbr_border8 {
+	border: 3px dashed #00e388;
+}
+.timbr_border9 {
+	border: 3px dashed #00bd1c;
+}
+.timbr_border10 {
+	border: 3px dashed #f5d11b;
+}
+.timbr_border11 {
+	border: 3px dashed #d17e02;
+}
+.timbr_border12 {
+	border: 3px dashed #59362a
+}
+
+.dis{
+	display: none;
+}

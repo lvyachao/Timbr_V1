@@ -1,0 +1,30 @@
+# Meteor packages used by this project, one per line.
+#
+# 'meteor add' and 'meteor remove' will edit this file for you,
+# but you can also edit it by hand.
+
+meteor-platform
+iron:router
+coffeescript
+mrt:vue
+http
+particle4dev:cheerio
+meteorhacks:async
+mrt:nprogress
+stylus
+chrismbeckett:toastr
+mrt:deb
+twbs:bootstrap
+maazalik:malihu-jquery-custom-scrollbar
+momentjs:moment
+mrt:state-machine
+cfs:power-queue
+
+timber-server-util
+timber-queue
+cfs:reactive-list
+rexzh0u:introjs
+random
+accounts-facebook
+accounts-google
+ian:accounts-ui-bootstrap-3

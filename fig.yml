@@ -1,0 +1,24 @@
+web:
+  image: zhouzhuojie/docker-passenger-meteor
+  working_dir: /home/app/webapp
+  ports:
+    - "80:3000"
+  links:
+    - mongodb
+  environment:
+    MONGO_URL: mongodb://mongodb:27017/meteor
+    ROOT_URL: http://timbr.me
+  volumes_from:
+    - webdata
+  command: /bin/sh /home/app/prod.sh
+
+mongodb:
+  image: dockerfile/mongodb
+  volumes_from:
+    - webdata
+
+webdata:
+  image: busybox
+  volumes:
+    - .:/home/app/webapp
+    - /home/zzj/ssd_data/TimberDB:/data/db

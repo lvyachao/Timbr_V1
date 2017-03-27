@@ -1,0 +1,189 @@
+<template name="resultView">
+    <div class="t-Result u-fill">
+        <div class="row u-fill">
+            <div class="t-Result-Panel col-sm-3 u-fill">
+                <div class="t-Result-Panel-Body">
+
+                    <div class="panel panel-primary" v-show="needToShow('url')">
+                        <div class="panel-heading">Result URL</div>
+                        <div class="panel-body">
+                            <div class="input-group">
+                                <input class="form-control" type="text" v-model="urlInput" v-on="keyup: getUrlContent | key enter" autofocus>
+                                <span class="t-Result-Form-Search-Btn input-group-addon" v-on="click: getUrlContent">Enter</span>
+                            </div>
+                            <hr>
+                            <strong>Test some example websites</strong>
+                            <div class="row no-gutter">
+                                <div class="col-sm-6">
+                                    <button class="btn btn-default btn-block" data-url="https://github.com/search?utf8=%E2%9C%93&q=javascript" v-on="click: onClickExampleBtn">Github</button>
+                                    <button class="btn btn-default btn-block" data-url="http://www.walmart.com/search/?query=iphone" v-on="click: onClickExampleBtn">Walmart </button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button class="btn btn-default btn-block" data-url="http://www.trulia.com/for_sale/Washington,DC" v-on="click: onClickExampleBtn">Trulia </button>
+                                    <button class="btn btn-default btn-block" data-url="http://www.amazon.com/s/ref=nb_sb_noss_1?url=search-alias%3Daps&field-keywords=iphone" v-on="click: onClickExampleBtn">Amazon </button>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row no-gutter">
+                                <div class="col-sm-6">
+                                    <button class="btn btn-default btn-block" data-url="http://www.amazon.com/Apple-iPhone-Space-Gray-Unlocked/dp/B00NQGP42Y/ref=sr_1_1?ie=UTF8&qid=1423111591&sr=8-1&keywords=iphone" v-on="click: onClickExampleBtn">Amazon Graph</button>
+                                    <button class="btn btn-default btn-block" data-url="http://forum.xda-developers.com/member.php?u=4303206" v-on="click: onClickExampleBtn">XDA Graph</button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button class="btn btn-default btn-block" data-url="http://www.ebay.com/itm/Acer-Aspire-Switch-10-1-Touchscreen-Laptop-Windows-8-1-SW5-011-18R3-/251610383334?&_trksid=p2056016.m2516.l5255" v-on="click: onClickExampleBtn">Ebay Graph</button>
+                                    <button class="btn btn-default btn-block" data-url="http://dblp.uni-trier.de/pers/hd/z/Zhang_0004:Nan" v-on="click: onClickExampleBtn">DBLP Graph</button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button class="btn btn-default btn-block" data-url="http://www.flyertalk.com/forum/members/friendlyskies.html" v-on="click: onClickExampleBtn">FlyerTalk Graph (1)</button>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button class="btn btn-default btn-block" data-url="http://www.flyertalk.com/forum/members/goamtrak.html" v-on="click: onClickExampleBtn">FlyerTalk Graph (2)</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="t-Result-Tuples-Control-Panel panel panel-primary" v-show="needToShow('tuples')">
+                        <div class="panel-heading">Find Tuples</div>
+                        <div class="panel-body">
+                            <div role="tabpanel">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active" v-on="click: enableTuplesMode('Advanced')"><a href="#t-Result-Tuples-Control-Advanced" aria-controls="t-Result-Tuples-Control-Advanced" role="tab" data-toggle="tab">Advanced</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="t-Result-Tuples-Control-Advanced">
+                                        <h5>Click two tuples to locate tuples.</h5>
+                                        <hr>
+                                        <textarea name="" rows="4" v-model="selectorAdvancedStr"></textarea>
+                                        <button class="btn btn-warning btn-block" v-on="click: refreshTwoClick">
+                                            <span class="glyphicon glyphicon-remove-sign"></span> Clear Selected Tuples
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="t-Result-Attributes-Control-Panel panel panel-primary" v-show="needToShow('attrs')">
+                        <div class="panel-heading">Find Attributes</div>
+                        <div class="panel-body">
+                            <ul class="list-group">
+                                <button type="button" class="btn btn-default btn-block" aria-label="Left Align" v-on="click: addAttr">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a new attribute
+                                </button>
+                                <li class="list-group-item" v-repeat="attr:selectorAttrs">
+                                    <input class="form-control" placeholder="Attribute Name, e.g. Price, Title" v-model="attr.name">
+                                    <div class="input-group">
+                                        <input class="form-control" placeholder="Selector output" v-model="attr.selector">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" v-on="click: addAttrSelector($index)">
+                                                <span class="glyphicon glyphicon-hand-up" aria-hidden="true"></span>
+                                            </button>
+                                        </span>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" v-on="click: rmAttr($index)">
+                                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="t-Result-NextButton-Panel panel panel-primary" v-show="needToShow('nextpages')">
+                        <div class="panel-heading">Pagination (Optional) </div>
+                        <div class="panel-body">
+                            <div role="tabpanel">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li role="presentation" class="active" v-on="click: enableNextButtonHighLight('button')"><a href="#t-Result-Nextpage-Control-Button" aria-controls="t-Result-Nextpage-Control-Button" role="tab" data-toggle="tab">Next Button</a></li>
+                                    <li role="presentation" class="" v-on="click: enableNextButtonHighLight('links')"><a href="#t-Result-Nextpage-Control-Links" aria-controls="t-Result-Nextpage-Control-Links" role="tab" data-toggle="tab">Links</a></li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div role="tabpanel" class="tab-pane active" id="t-Result-Nextpage-Control-Button">
+                                        <h5>Click the next page button</h5>
+                                        <input type="text" class="form-control" v-model="pageCount" placeholder="Max page count, e.g. 10">
+                                        <textarea name="" rows="4" v-model="selectorNext"></textarea>
+                                        <button class="btn btn-warning btn-block" v-on="click: refreshNextpage">
+                                            <span class="glyphicon glyphicon-remove-sign"></span> Clear Selected Button
+                                        </button>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="t-Result-Nextpage-Control-Links">
+                                        <h5>Click the links</h5>
+                                        <input type="text" class="form-control" v-model="pageCount" placeholder="Max page count, e.g. 10">
+                                        <textarea name="" rows="4" v-model="selectorNext"></textarea>
+                                        <button class="btn btn-warning btn-block" v-on="click: refreshNextpage">
+                                            <span class="glyphicon glyphicon-remove-sign"></span> Clear Selected Links
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <button class="btn btn-primary btn-block" v-on="click: backState" v-class="disabled: isOnUrl">
+                                    <span class="glyphicon glyphicon-chevron-left"></span> Back
+                                </button>
+                            </div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-primary btn-block" v-on="click: nextState" v-if="!needToShow('submit') && !needToShow('attrs')">
+                                    <span class="glyphicon glyphicon-chevron-right"></span> Next
+                                </button>
+                                <button class="btn btn-success btn-block" v-on="click: submitResultJson('preview'), click: nextState" v-if="needToShow('attrs')">
+                                    Preview
+                                </button>
+                                <button class="btn btn-success btn-block" v-on="click: submitResultJson('crawl')" v-if="needToShow('submit')">
+                                    Crawl
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="t-Result-Iframe-Wrapper col-sm-9 u-fill">
+                <div role="tabpanel" class="t-Result-IframeResult-Panel u-fill">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#t-Result-Iframe-Tab" aria-controls="t-Result-Iframe-Tab" role="tab" data-toggle="tab">Iframe</a></li>
+                        <li role="presentation" class=""><a href="#t-Result-Preview-Table-Tab" aria-controls="t-Result-Preview-Table-Tab" role="tab" data-toggle="tab">Preview Results</a></li>
+                        <li role="presentation" class="">
+                            <a href="#t-Result-Crawl-Table-Tab" aria-controls="t-Result-Crawl-Table-Tab" role="tab" data-toggle="tab">Crawl Results
+                                <span class="label label-info" v-show="crawlPercent">[[crawlPercent]]%</span>
+                            </a>
+                        </li>
+                        <li role="presentation" class=""><a href="#t-Result-Graph-Tab" aria-controls="t-Result-Graph-Tab" role="tab" data-toggle="tab">Graph Results</a></li>
+                        <li role="presentation" class=""><a href="#t-Result-Debug-Tab" aria-controls="t-Result-Debug-Tab" role="tab" data-toggle="tab">Graph Debug Logs</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active u-fill" id="t-Result-Iframe-Tab">
+                            <iframe class="t-Result-Iframe center-block" srcdoc="[[urlContent]]" frameborder="0"></iframe>
+                        </div>
+                        <div role="tabpanel" class="t-Result-Table-Tab tab-pane" id="t-Result-Preview-Table-Tab">
+                            <table class="t-Result-Preview-Table table table-striped table-bordered"></table>
+                        </div>
+                        <div role="tabpanel" class="t-Result-Table-Tab tab-pane" id="t-Result-Crawl-Table-Tab">
+                            <table class="t-Result-Crawl-Table table table-striped table-bordered"></table>
+                        </div>
+                        <div role="tabpanel" class="t-Result-Table-Tab tab-pane u-fill" id="t-Result-Graph-Tab">
+                            <div class="t-Result-Graph u-fill"></div>
+                        </div>
+                        <div role="tabpanel" class="t-Result-Table-Tab tab-pane u-fill" id="t-Result-Debug-Tab">
+                            <div class="t-Result-Debug u-fill">
+                                <ul>
+                                    <li v-repeat="msg:logMessages">
+                                        <div>#[[$index]]</div>
+                                        <div v-html="jsonLogMessages(msg)"></div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
