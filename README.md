@@ -28,3 +28,6 @@ cd timber
 ```bash
 meteor
 ```
+#License
+
+The MIT License (MIT)
