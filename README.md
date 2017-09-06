@@ -1,4 +1,8 @@
 # Project Timber
+Timbr is a web service/application that turns an arbitrary web page into structure JSON data 
+
+# V 1.0
+
 
 # Installation
 
