@@ -4,7 +4,7 @@
 
 - Clone the git repo
 ```bash
-git clone https://github.com/zhouzhuojie/Timbr.git
+git clone https://github.com/zhouzhuojie/Timbr_V1.git
 cd timber
 ./install.sh
 ./watch.sh
