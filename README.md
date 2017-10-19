@@ -15,7 +15,7 @@ This version is an early but stable version. Currently version is under re-desig
 1. You need a NodeJS environment: [NodeJS](https://nodejs.org/en/)
 2. Clone the git repo and do following commands on your terminal!
 ```bash
-git clone https://github.com/zhouzhuojie/Timbr_V1.git
+git clone https://github.com/lvyachao/Timbr_V1.git
 cd timber
 ./install.sh
 ./watch.sh
